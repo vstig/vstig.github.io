@@ -4,6 +4,7 @@ title:  "Ellohay Orldway!"
 date:   2018-10-05 20:17:39 -0400
 categories: jekyll update
 ---
+
 My first post. No content yet...but stay tuned.
 
 Hoping to post a project around generating song lyrics by different genre soon for my first real post.
