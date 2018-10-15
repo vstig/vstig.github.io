@@ -1,9 +1,11 @@
 ---
 layout: page
-title: About Me
+title: About
 permalink: /about/
 ---
 <img align="right" style="width:40%;height:40%;margin:0px 10px" src="/assets/vangogh.jpg" alt="Vincent"/>
+
+***Vincent Stigliani***
 
 I am currently a data scientist in Philadelphia, PA. I work for Picwell, a startup providing decision support for healthcare plan selection.
     
