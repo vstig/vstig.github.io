@@ -3,7 +3,7 @@ layout: page
 title: About
 permalink: /about/
 ---
-<img align="right" style="width:40%;height:40%;margin:0px 10px" src="/assets/vangogh.jpg" alt="Vincent"/>
+<img align="right" style="width:40%;height:40%;margin:0px 10px" src="/assets/super_profesh.jpg" alt="Vincent"/>
 
 ***Vincent Stigliani***
 

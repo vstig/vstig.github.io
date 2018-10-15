@@ -5,5 +5,5 @@
 layout: home
 ---
 
-<img align="right" style="width:35%;height:35%;margin:0px 10px" src="/assets/super_profesh.jpg" alt="Vincent"/>
+<img align="right" style="width:35%;height:35%;margin:0px 10px" src="/assets/vangogh.jpg" alt="Vincent"/>
 
