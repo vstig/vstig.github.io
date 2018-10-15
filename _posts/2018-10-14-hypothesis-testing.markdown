@@ -34,7 +34,7 @@ Let us first assume that I am collecting the data by hand and I am feeling lazy,
 
 We want to know if there is a significant difference between salaries of the two groups.
 
-If we look at the means, we see that data scientists in this sample made an average of $94k, while data analysts made ~$77k on average.  While this intuitively seems like a large difference, we need to keep in mind this may not be significant (in particular, if the within-group variation is sufficiently high).  Hypothesis testing allows us to more rigorously answer this question to a specified degree of confidence.
+If we look at the group means, we see that data scientists in this sample made an average of $94k, while data analysts made ~$77k on average.  While this intuitively seems like a large difference, there is a chance we got "unlucky" and happened to sample data scientists at the higher end of the pay-scale (or analysts at the lower end, or both).  Hypothesis testing allows us to more rigorously answer this question, by quantifying how likely we are to observe the difference by chance, assuming no true difference between the groups.
 
 #### Test Statistics
 A test statistic is simply a quantity derived from a sample.  We can calculate different test statistics from these samples above.  
