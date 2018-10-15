@@ -5,8 +5,6 @@ permalink: /about/
 ---
 <img align="right" style="width:40%;height:40%;margin:0px 10px" src="/assets/super_profesh.jpg" alt="Vincent"/>
 
-***Vincent Stigliani***
-
 I am currently a data scientist in Philadelphia, PA. I work for Picwell, a startup providing decision support for healthcare plan selection.
     
 I received a BA w/ High Honors from Swarthmore College in 2014, where I studied cognitive science in an interdisciplinary major combining computer science, psychology, and philosophy.
