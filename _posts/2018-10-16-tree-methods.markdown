@@ -239,7 +239,7 @@ from sklearn.ensemble import DecisionTreeRegressor
 X = male_wages_w_dummies.drop(cat_cols+['wage'], axis=1)
 dtr = DecisionTreeRegressor().fit(X, male_wages_w_dummies['wage'])
 
-export_graphviz(dtr, out_file='/Users/vincentstigliani/Desktop/dtr_wage.dot',
+export_graphviz(dtr, out_file=out_f,
                feature_names=X.columns.tolist(),
                 max_depth=3,
                 rounded=True,)
