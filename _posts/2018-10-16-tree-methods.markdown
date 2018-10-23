@@ -167,7 +167,7 @@ algorithm on the subgroups until some stopping criteria is met (e.g. commonly a 
  
  The following image provides a visualization of the resulting model structure (note that the particular split points 
  are slightly different, based on how scikit chooses splits vs. how I did, but result in the same groups for our training
- data, e.g. Age <= 37.5 results in the same split as Age < 49/A>=49 in our data.).
+ data, e.g. Age <= 37.5 results in the same split as Age < 49 /Age >= 49 in our data).
  
  <img align="center" style="width:400%;height:400%;margin:0px 10px" src="/assets/dtr.png" alt="Decision Tree Structure"/>
  

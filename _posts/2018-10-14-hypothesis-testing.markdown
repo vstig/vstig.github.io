@@ -9,11 +9,11 @@ categories: jekyll update
 
 ## Background & Motivations
 
-Having never taken a formal statistics course in college, I often felt unsatisfied with my understanding of hypothesis testing. I took enough psychology and research design courses to understand the general motivation: given two groups and some observed variable, one can apply statistical tests to determine whether the groups are "meaningfully different" to some specified confidence level.  However, my limited exposure to the statistical basis meant I treated method as a black box that magically returned a number (hopefully less than .05 😅), with little underlying sense of when, how, or why it worked.
+With all the modern tools for stats, it is easy to treat many of the methods as black boxes.  As such, I had often felt unsatisfied with my understanding of the nuances of hypothesis testing. I took enough psychology and research design courses to understand the general motivation: given two groups and some observed variable, one can apply statistical tests to determine whether the groups are "meaningfully different" to some specified confidence level.  However, my limited exposure to the statistical basis meant I treated the method as a black box that magically returned a number (hopefully less than .05 😅), with little underlying sense of exactly when, how, or why it worked.
 
-About a year ago, I came across a PyCon video I would highly recommend called [Statistics for Hackers](https://www.youtube.com/watch?v=Iq9DzN6mvYA).  I had never seen the materials presented in this way; seeing the concepts presented in concrete code made the ideas click in a way that reading stat formulas never had (very similar to the effect of the [Hacker's Guide to Neural Networks](http://karpathy.github.io/neuralnets/), a topic for another post).  
+About a year ago, I came across a PyCon video I would highly recommend called [Statistics for Hackers](https://www.youtube.com/watch?v=Iq9DzN6mvYA).  His underlying message: ```"If you can write a for-loop, you can do statistics"```  I had never seen the materials presented in this way; seeing the concepts presented in concrete code made the ideas click in a way that reading stat formulas never had (very similar to the effect of the [Hacker's Guide to Neural Networks](http://karpathy.github.io/neuralnets/), a topic for another post).  
 
-More recently, a coworker presented a Lunch & Learn that went a bit further, connecting dots between the "hacker's" perspective and a more traditional statistician's apprach.  Then, I took the time to actually code out some of the details, and the concepts started to become much more clear.  I won't go into the nitty gritty details of hypothesis testing here, as there are many readily available resources on the web.  However, I will provide a high level overview that will hopefully orient the reader and provide some context to this code.  In the remainder of this post, I will present my short "hacker's guide" to t-testing.
+More recently, a coworker presented a Lunch & Learn that went a bit further, connecting dots between the "hacker's" perspective and a more traditional statistician's approach.  Then, I took the time to actually code out some of the details, and the concepts started to become much more clear.  I won't go into the nitty gritty details of hypothesis testing here, as there are many readily available resources on the web.  However, I will provide a high level overview that will hopefully orient the reader and provide some context to this code.  In the remainder of this post, I will present my short "hacker's guide" to t-testing.
 
 
 ## Setting Up the Problem
@@ -37,27 +37,65 @@ We want to know if there is a significant difference between salaries of the two
 If we look at the group means, we see that data scientists in this sample made an average of $94k, while data analysts made ~$77k on average.  While this intuitively seems like a large difference, there is a chance we got "unlucky" and happened to sample data scientists at the higher end of the pay-scale (or analysts at the lower end, or both).  Hypothesis testing allows us to more rigorously answer this question, by quantifying how likely we are to observe the difference by chance, assuming no true difference between the groups.
 
 #### Test Statistics
-A test statistic is simply a quantity derived from a sample.  We can calculate different test statistics from these samples above.  
+A test statistic is simply a quantity derived from a sample.  We can calculate different test statistics from these samples above.
 
-If we know the true underlying population variance (uncommon situation, but with large N, the sample approximation is often good enough) we can calculate a ***z-statistic***, which essentially measures the amount of between group variance relative to the within group variance.  
+Both of these statistics will involve comparing the difference in group means relative to the variance of the sampling mean (not to be confused with the variance of the underlyinh population itself).  The ***variance*** is a measure of the spread of datapoints from a mean.  So as this becomes larger, so too does the likelihood of observing larger differences between sample means.
+
+If we know the true underlying population variance (uncommon situation, but with large N, the sample approximation is often good enough) we can calculate a ***z-statistic***, which measures the amount of between group variance relative to the within group variance.  
 
 The ***t-statistic*** provides another measure of between / within group variance, but can be used when the population variance is unknown, and corrects for the fact that the sample variance is an _estimate_ of the population variance with it's own associated standard error.  This distinction becomes less important as the sample size increase, and thus the sample variance approaches the population variance, but can have an impact in scenarios with small sample size, as we will see below.
 
 #### Writing Some Code
 First, we will code up the calculation of the aforementioned statistics.  You can see the details for yourself [here](https://en.wikipedia.org/wiki/Student%27s_t-test#Independent_two-sample_t-test) and elsewhere.
+
+We will define some common shared methods: ***standard error*** is a measure of the standard deviation of the sampling mean, calculated as:
+
 {% highlight python %}
 def standard_error(std, n):
+    # std: standard deviation of the population
+    # n: number of observations in sample
     return std / np.sqrt(n)
+{% endhighlight %}
 
+Because we are comparing two groups in an independent samples t-test, we need to calculate the standard error of the _new_ distribution G1 - G2.  We can do that as:
+
+{% highlight python %}
 def standard_error_of_difference(g1, g2, std):
     standard_errors = list(map(lambda grp: standard_error(std, len(grp)), [g1, g2]))
     return np.sqrt(np.sum(np.square(standard_errors)))
-    
+{% endhighlight %}
+
+Our z-score, then, can be calculated as:
+{% highlight python %}
+def zscore(g1, g2, std):
+    standard_error = standard_error_of_difference(g1, g2, std)
+    return (g1.mean() - g2.mean())/standard_error
+{% endhighlight %}
+
+If we do not know the true population standard deviation, we estimate it from pooling sample as follows:
+
+{% highlight python %}
 def pooled_sigma(g1, g2):
     pooled_var = sum([(len(grp) - 1)*grp.var(ddof=1) for grp in [g1, g2]]) / (len(g1) + len(g2) - 2)
     return np.sqrt(pooled_var)
+{% endhighlight %}
 
+For a t-test (where we don't know the population standard deviation), we can calculate the t-score as:
+
+{% highlight python %}
+def tscore(g1, g2):
+    estimated_std = pooled_sigma(g1, g2)
+
+    standard_error = standard_error_of_difference(g1, g2, estimated_std)
+    return (g1.mean() - g2.mean())/standard_error
+{% endhighlight %}
+
+The two calculations are very similar.  We can explicitly see how they are related with the following function:
+
+{% highlight python %}
 def test_statistic(g1, g2, std=None):
+    # if std provided, calculates z-score.
+    # else, estimates population SD and calculates t-score
     if std is None:
         # Population variance not known. Calculate t-stastic
         std = pooled_sigma(g1, g2)
@@ -65,12 +103,6 @@ def test_statistic(g1, g2, std=None):
     se = standard_error_of_difference(g1, g2, std)
     
     return (g1.mean() - g2.mean()) / se
-
-def zscore(g1, g2, std):
-    return test_statistic(g1, g2, std)
-
-def tscore(g1, g2):
-    return test_statistic(g1, g2)
 {% endhighlight %}
 
 ## Calculating the Test Statistics
