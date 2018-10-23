@@ -1,11 +1,9 @@
 ---
 layout: post
-title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods
+title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods Part 1: Choosing A Split
 date:   2018-10-17 17:30:00 -0400
 categories: jekyll update
 ---
-# Part 1: Choosing A Split
-
 ### Background & Motivation
 As the title of this post suggests, I think there is great value in understanding, at a very low level, how decision 
 trees are built.  I hope to present a simple introduction of this process, and then build this out to trees and forests
@@ -14,7 +12,7 @@ in future posts.  But first, a little analogy that hopefully sets some intuition
 Do you remember playing the game "20 Questions" to pass the time during a long car ride or sleepless nights as a kid? 
 For those that missed out, the game involved two people, a Questioner (Q) and and Answerer (A).  First, A thinks of an
 object and keeps this selection private.  Then, Q has the opportunity to ask 20 Yes/No questions in an effort to 
-identify A's secret object.  If you are unfamiliar and curious, try it out [here](http://www.20q.net/).
+identify A's secret object.  If you are unfamiliar and curious, try it out [here](http://www.20q.net/) (excuse the clunky UI, and note that you will be playing against a computer Questioner).
 
 When I first learned of the game, I remember being amazed/skeptical that someone could hone in on a specific object from
  the vast sea of possible words in a mere 20 questions.  However, I soon learned that 20 questions was more than enough to 
@@ -170,17 +168,6 @@ algorithm on the subgroups until some stopping criteria is met (e.g. commonly a 
  data, e.g. Age <= 37.5 results in the same split as Age < 49 /Age >= 49 in our data).
  
  <img align="center" style="width:400%;height:400%;margin:0px 10px" src="/assets/dtr.png" alt="Decision Tree Structure"/>
- 
- 
-### Next Steps
-In a future post, I will go more into the details such as how we decide on a stopping criteria, limitations to the
-decision tree framework, and how extensions like bagging and random forests can address some of these shortcomings.
-In this post, I wanted to lay the groundwork for thinking about how a tree is constructed at the most micro level. 
-Breaking it down into components like "candidate split search" and "optimal split selection" also lay a good foundation
-for reasoning about model training and parameter tuning. For example, as we will see when we move into random forests, 
-limiting the candidate split search to a random subset of the features at each split can significantly
-improve model test performance and generalizability.  Or we may want to modify the selection step; for certain
-applications our notion of "best split" may involve another metric such as MAE that is less sensitive to outliers.
   
 As a final, I will demonstrate the flexibility of the approach on a more real dataset, so the results are perhaps more
 interesting and compelling.
@@ -246,3 +233,13 @@ export_graphviz(dtr, out_file=out_f,
 ```
 
 <img align="center" style="width:400%;height:400%;margin:0px 10px" src="/assets/dtr_wage.png" alt="Wages Decision Tree Structure"/>
+
+### Next Steps
+In a future post, I will go more into the details such as how we decide on a stopping criteria, limitations to the
+decision tree framework, and how extensions like bagging and random forests can address some of these shortcomings.
+In this post, I wanted to lay the groundwork for thinking about how a tree is constructed at the most micro level. 
+Breaking it down into components like "candidate split search" and "optimal split selection" also lay a good foundation
+for reasoning about model training and parameter tuning. For example, as we will see when we move into random forests, 
+limiting the candidate split search to a random subset of the features at each split can significantly
+improve model test performance and generalizability.  Or we may want to modify the selection step; for certain
+applications our notion of "best split" may involve another metric such as MAE that is less sensitive to outliers.
