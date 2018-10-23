@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods Part 1: Choosing A Split
+title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods | Part 1 Choosing A Split
 date:   2018-10-17 17:30:00 -0400
 categories: jekyll update
 ---
