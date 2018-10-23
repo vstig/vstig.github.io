@@ -1,9 +1,10 @@
 ---
 layout: post
-title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods | Part 1 Choosing A Split
+title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods Part 1
 date:   2018-10-17 17:30:00 -0400
 categories: jekyll update
 ---
+
 ### Background & Motivation
 As the title of this post suggests, I think there is great value in understanding, at a very low level, how decision 
 trees are built.  I hope to present a simple introduction of this process, and then build this out to trees and forests
