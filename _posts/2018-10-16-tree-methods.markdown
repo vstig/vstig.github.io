@@ -36,10 +36,9 @@ learn a problem.
 #### Generating Candidate Splits
 Similar to the questions in a game of 20 Questions, decision trees ask a series of Yes/No questions about your data.  At
  each step, we first gather a list of all potential questions about our features (for categorical features, we can ask
-  "Is F = F_i" for each category in the feature, and for continuous features we can ask "Is F greater than F_i" for each
-   observed value (or some discretization of the observed values)).
+  "Is _Feature I_ = _X_" for each category _X_ in _Feature I_, and for continuous features we can ask "Is _Feature I_ greater than _X_" for each observed value of _Feature I_ (or some discretization of the observed values)).
 
-Suppose we have the following toy dataset of salaries by age and geographic region.
+Suppose we have the following toy dataset of salaries by age and geographic region:
 
 |   Age | Region  |   Salary |
 |:------:|:---------:|:---------:|
@@ -106,13 +105,10 @@ to gain the most information about salary.
 #### Selecting Optimal Split
 Once we have generated all possible splits of our data, we need a decision rule to select the "best" split.  This rule 
 can take different forms, but in general we are trying to minimize some cost function of our data.  In the
- classification context, the cost function is average entropy within leaves across the tree.  For regression, which we 
- are exploring here, we can try to minimize variance of the target variable within groups.  The goal is to split the
-  data in such a way that the resulting groups are as "similar" as possible (with regards to some specified target
+ classification context, the cost function often takes the form of average entropy within leaves across the tree.  For regression, which we  are exploring here, we can try to minimize variance of the target variable within groups.  The goal is to split the data in such a way that the resulting groups are as "similar" as possible (with regards to some specified target
    variable).
 
-Suppose we start with some group X and variable y (with variance y_x).  Then, we can generate different splits of X 
-according to each of the candidate splits identified in the previous section, to get resulting groups X_i and X_j.  For 
+Suppose we start with some group _X_ and variable _y_.  Then, we can generate various splits of X according to each of the candidate splits identified in the previous section, to get resulting groups _X_i_ and _X_j_.  For 
 each of these splits, we can calculate a new weighted variance as follows:
 
 {% highlight python %}
@@ -127,9 +123,8 @@ def get_split_variance(X, feature, val, y):
     return ((np.var(X_i[y]) * X_i.shape[0]) + (np.var(X_j[y]) * X_j.shape[0])) / X.shape[0]
 {% endhighlight %}
 
-This is simply a function of the dataframe, split information (feature and value), and target variable.  Thus, we can
-calculate the resulting weighted variance of _every_ candidate split, and then select the split that results in the
- lowest weighted variance (equivalently, the split with _greatest_ variance reduction from the original X).
+This is simply a function of the dataframe (_X_), split information (feature and value), and target variable (_y_).  Thus, we can easily calculate the resulting weighted variance of _every_ candidate split, and then select the split that results in the
+ lowest weighted variance (equivalently, the split with _greatest_ variance reduction from the original _X_).
  
 Applying this to our toy dataset and candidate splits, we get the following variance reduction for each split:
 {% highlight python %}
@@ -159,7 +154,7 @@ This results in the following split stats:
 This tells us that our first split should be on Age >= 49, as that will lead to the largest reduction of variance for the
 `Salary` variable.  You can probably see that this will result in two new datasets `X_i` and `X_j`, each of which have
 their own set of candidate splits and associated variance reductions.  In this way, we can recursively apply the 
-algorithm on the subgroups until some stopping criteria is met (e.g. commonly a maximum "depth" or some minimum required
+algorithm on the subgroups until some stopping criterion is met (e.g. commonly a maximum "depth" or some minimum required
  number of samples).  The resulting model has a tree structure, where predicting the target for a new sample involves 
  traversing the Yes/No questions until reaching a final terminal node, at which point the prediction is the average (or
  modal, in the case of classification) value target value of training data that ended up in that node.
@@ -236,7 +231,7 @@ export_graphviz(dtr, out_file=out_f,
 <img align="center" style="width:400%;height:400%;margin:0px 10px" src="/assets/dtr_wage.png" alt="Wages Decision Tree Structure"/>
 
 ### Next Steps
-In a future post, I will go more into the details such as how we decide on a stopping criteria, limitations to the
+In a future post, I will go more into the details such as how we decide on a stopping criterion, limitations to the
 decision tree framework, and how extensions like bagging and random forests can address some of these shortcomings.
 In this post, I wanted to lay the groundwork for thinking about how a tree is constructed at the most micro level. 
 Breaking it down into components like "candidate split search" and "optimal split selection" also lay a good foundation
