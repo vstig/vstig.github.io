@@ -69,7 +69,7 @@ def get_candidate_splits(df, y):
                 candidate_splits += [(col, v) for v in set(np.percentile(df[col].dropna(), range(10, 100, 10)))]
         else:
             # If categorical, split on the 10 most frequenty occuring values (again my simplification)
-            if df[col].nunique<10:
+            if df[col].nunique()<10:
                 candidate_splits += [(col, v) for v in df[col].unique()]
             else:
                 candidate_splits += [(col, v) for v in df[col].value_counts().sort_values(ascending=False).index[:10]]
