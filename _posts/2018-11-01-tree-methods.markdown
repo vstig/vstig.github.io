@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods Part 2
-date:   2018-10-30 17:30:00 -0400
+date:   2018-11-01 17:30:00 -0400
 categories: jekyll update
 ---
 
