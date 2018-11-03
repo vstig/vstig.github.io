@@ -3,7 +3,7 @@ layout: post
 title:  Seeing the Trees for the Forest | A gentle introduction to tree-based methods Part 2
 date:   2018-11-01 17:30:00 -0400
 categories: jekyll update
-published: true
+published: false
 ---
 
 ### Part 2: Constructing the Tree
@@ -12,8 +12,6 @@ In the previous post, we construced the basic building blocks of our decision tr
 
 * `candidate_splits` which takes an X matrix and returns all possible Yes/No questions we can ask of the data (potential split points)
 * `vardiance_reduction` which takes an X matrix, y feature, and candidate splits, and returns the variance reduction (of y) for each split
-
-The code developed in this post and the last can be explored in more detail at the repo [here](https://github.com/vstig/MyTree).
 
 Next, we will see how we can recursively apply these methods to partition the X matrix to minimize the variance of y in the resulting "terminal nodes".  Putting these pieces together, we can construct a _Decision Tree Regressor_ to predict y for new, unseen data.
 
@@ -418,4 +416,4 @@ We should be wary of reading much into these rules (in particular, the splits at
 
 In the next post and final post of this series, I hope to extend the ideas one step further to Random Forests, where we can create an _ensemble_ of trees to reduce the risk of overfitting while still allowing us to model highly complex, non-linear relationships.
 
-Until then, ciao :wave:
+The code developed in this post and the last can be explored in more detail at the repo [here](https://github.com/vstig/MyTree).
